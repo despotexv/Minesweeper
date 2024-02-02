@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minesweeper Game README</title>
+</head>
+<body>
+
+<h1>Minesweeper Game</h1>
+
+<p>This Minesweeper game is a Python implementation of the classic puzzle game. The game presents a grid of tiles, some of which contain hidden mines. The objective is to clear the grid without detonating any mines.</p>
+
+<h2>Gameplay</h2>
+
+<ul>
+    <li>The game generates a grid with hidden mines.</li>
+    <li>Clicking on a tile will either reveal the number of mines in adjacent tiles or a mine, ending the game.</li>
+    <li>The player can flag tiles they suspect contain mines to avoid accidentally clicking them.</li>
+    <li>The game is won when all non-mine tiles are revealed.</li>
+</ul>
+
+<h2>Features</h2>
+
+<ul>
+    <li>Dynamic grid generation based on user-defined size and mine probability.</li>
+    <li>Safe first click to ensure the first tile revealed is never a mine.</li>
+    <li>Recursive reveal of adjacent non-mine tiles for faster board clearing.</li>
+    <li>Simple ASCII-based UI for easy gameplay.</li>
+</ul>
+
+<h2>How to Play</h2>
+
+<ol>
+    <li>Run the game in a Python environment.</li>
+    <li>Enter the desired grid size and mine probability when prompted.</li>
+    <li>Use mouse clicks to reveal tiles and right-click to flag potential mines.</li>
+    <li>Use logic and caution to reveal all safe tiles!</li>
+</ol>
+
+<h2>Requirements</h2>
+
+<ul>
+    <li>Python 3.x</li>
+    <li>No external libraries are required for the console version.</li>
+    <li>Pygame library required for the graphical version.</li>
+</ul>
+
+<h2>Installation</h2>
+
+<p>Clone or download this repository. If you're playing the graphical version, ensure Pygame is installed:</p>
+
+<pre>
+<code>
+pip install pygame
+</code>
+</pre>
+
+<p>Run the game using Python :</p>
+
+<pre>
+<code>
+python minesweeper.py Length Width Probability
+</code>
+</pre>
+
+<h2>Contributing</h2>
+
+<p>Contributions, issues, and feature requests are welcome. Feel free to check <a href="#">issues page</a> if you want to contribute.</p>
+
+<h2>License</h2>
+
+<p>Distributed under the MIT License. See <code>LICENSE</code> for more information.</p>
+
+<h2>Acknowledgments</h2>
+
+<ul>
+    <li>This project is inspired by the classic Minesweeper game.</li>
+    <li>Thanks to all contributors who helped in building and refining this project.</li>
+</ul>
+
+</body>
+</html>

@@ -1,70 +1,60 @@
 class Piece:
-    """
-    Represents a cell in Minesweeper. A cell can be a bomb, can be flagged, clicked,
-    and knows about its neighboring cells.
-    """
+    """Represents a single piece on the Minesweeper board, which could be a bomb or safe spot."""
 
     def __init__(self, has_bomb):
         """
-        Initializes a Piece object.
+        Initializes a new piece.
 
-        :param has_bomb: Boolean indicating whether the piece contains a bomb.
+        Parameters:
+        - has_bomb (bool): Indicates whether this piece contains a bomb.
         """
         self.has_bomb = has_bomb
-        self.bombs_around = 0
+        self.around = 0  # Number of bombs around this piece
         self.clicked = False
         self.flagged = False
-        self.neighbors = []
+        self.neighbors = []  # Adjacent pieces
 
     def __str__(self):
-        """
-        Provides a string representation of the Piece object.
-        """
-        return "B" if self.has_bomb else "0"
+        """Returns a string representation of the piece, primarily for debugging."""
+        return 'B' if self.has_bomb else ' '
+
+    def get_num_around(self):
+        """Returns the number of bombs around this piece."""
+        return self.around
+
+    def get_has_bomb(self):
+        """Returns True if this piece contains a bomb, False otherwise."""
+        return self.has_bomb
+
+    def get_clicked(self):
+        """Returns True if the piece has been clicked (revealed), False otherwise."""
+        return self.clicked
+
+    def get_flagged(self):
+        """Returns True if the piece has been flagged by the player, False otherwise."""
+        return self.flagged
 
     def toggle_flag(self):
-        """
-        Toggles the flagged status of the piece.
-        """
+        """Toggles the flagged state of this piece."""
         self.flagged = not self.flagged
 
     def handle_click(self):
-        """
-        Marks the piece as clicked.
-        """
+        """Marks the piece as clicked (revealed)."""
         self.clicked = True
+
+    def set_num_around(self):
+        """Calculates and sets the number of bombs in the adjacent pieces."""
+        self.around = sum(1 for neighbor in self.neighbors if neighbor.get_has_bomb())
 
     def set_neighbors(self, neighbors):
         """
-        Sets the neighboring pieces.
+        Sets the adjacent pieces (neighbors) of this piece.
 
-        :param neighbors: A list of neighboring Piece objects.
+        Parameters:
+        - neighbors (list[Piece]): A list of adjacent pieces.
         """
         self.neighbors = neighbors
 
-    def calculate_bombs_around(self):
-        """
-        Calculates the number of bombs in the adjacent pieces.
-        """
-        self.bombs_around = sum(1 for neighbor in self.neighbors if neighbor.has_bomb)
-
-    # Property decorators for better encapsulation and readability
-    @property
-    def num_around(self):
-        return self.bombs_around
-
-    @property
-    def is_bomb(self):
-        return self.has_bomb
-
-    @property
-    def is_clicked(self):
-        return self.clicked
-
-    @property
-    def is_flagged(self):
-        return self.flagged
-
-    @property
-    def neighbors(self):
+    def get_neighbors(self):
+        """Returns the adjacent pieces (neighbors) of this piece."""
         return self.neighbors

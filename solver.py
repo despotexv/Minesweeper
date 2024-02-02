@@ -1,71 +1,62 @@
-class Piece:
-    """
-    Represents a piece on the Minesweeper board. A piece can have a bomb, be clicked, be flagged, 
-    and knows about its neighbors.
-    """
+import pyautogui
 
-    def __init__(self, has_bomb):
-        """
-        Initializes a piece with or without a bomb.
-        
-        :param has_bomb: Boolean indicating if the piece contains a bomb.
-        """
-        self.has_bomb = has_bomb
-        self.around_bombs = 0
-        self.clicked = False
-        self.flagged = False
-        self.neighbors = []
+class Solver:
+    """A solver for Minesweeper, automating moves based on current board state."""
 
-    def __str__(self):
+    def __init__(self, board):
         """
-        Returns a string representation of the piece.
-        """
-        return 'B' if self.has_bomb else 'E'
+        Initializes the solver with a game board.
 
-    def toggle_flag(self):
+        Parameters:
+        - board: The game board object, which the solver will interact with.
         """
-        Toggles the flagged state of the piece.
+        self.board = board
+
+    def move(self):
+        """Evaluates and performs moves on the Minesweeper board based on its current state."""
+        for row in self.board.get_board():
+            for piece in row:
+                if not piece.get_clicked():
+                    continue  # Skip already clicked (revealed) pieces
+
+                around = piece.get_num_around()  # Bombs around the current piece
+                unknown, flagged = 0, 0  # Count of unknown and flagged pieces around the current piece
+                neighbors = piece.get_neighbors()  # Neighboring pieces
+
+                for p in neighbors:
+                    if not p.get_clicked():
+                        unknown += 1
+                    if p.get_flagged():
+                        flagged += 1
+
+                # If the number of bombs around a piece equals the number of flagged neighbors, open the rest
+                if around == flagged:
+                    self.open_unflagged(neighbors)
+
+                # If the number of unknown pieces around a piece equals the number of bombs, flag all unknown pieces
+                if around == unknown:
+                    self.flag_all(neighbors)
+
+    def open_unflagged(self, neighbors):
         """
-        self.flagged = not self.flagged
+        Opens all unflagged neighboring pieces.
 
-    def handle_click(self):
+        Parameters:
+        - neighbors: A list of neighboring piece objects.
         """
-        Marks the piece as clicked.
+        for piece in neighbors:
+            if not piece.get_flagged():
+                # Simulate a click on the unflagged piece
+                self.board.handle_click(piece, False)
+
+    def flag_all(self, neighbors):
         """
-        if not self.flagged:  # Prevent clicking a flagged piece
-            self.clicked = True
+        Flags all unflagged neighboring pieces.
 
-    def set_neighbors(self, neighbors):
+        Parameters:
+        - neighbors: A list of neighboring piece objects.
         """
-        Sets the neighboring pieces.
-        
-        :param neighbors: List of neighboring Piece instances.
-        """
-        self.neighbors = neighbors
-
-    def calculate_bombs_around(self):
-        """
-        Calculates the number of bombs in neighboring pieces.
-        """
-        self.around_bombs = sum(neighbor.has_bomb for neighbor in self.neighbors)
-
-    # Properties for accessing piece attributes
-    @property
-    def num_around(self):
-        return self.around_bombs
-
-    @property
-    def has_bomb(self):
-        return self.has_bomb
-
-    @property
-    def is_clicked(self):
-        return self.clicked
-
-    @property
-    def is_flagged(self):
-        return self.flagged
-
-    @property
-    def neighbors(self):
-        return self.neighbors
+        for piece in neighbors:
+            if not piece.get_flagged():
+                # Simulate a right-click to flag the piece
+                self.board.handle_click(piece, True)
